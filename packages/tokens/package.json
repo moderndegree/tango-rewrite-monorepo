@@ -1,0 +1,19 @@
+{
+  "name": "@repo/tokens",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run build:tokens && pnpm run build:css",
+    "build:tokens": "style-dictionary build --config ./config.js",
+    "build:css": "npx tailwindcss -i ./demo/input.css -o ./demo/output.css --watch",
+    "test": "mocha 'config/**/*test.js'"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "style-dictionary": "^4.0.0",
+    "tailwindcss": "^3.4.15",
+    "mocha": "^10.2.0",
+    "chai": "^5.1.1"
+  }
+}
