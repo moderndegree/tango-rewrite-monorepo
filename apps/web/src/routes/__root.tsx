@@ -1,8 +1,6 @@
 import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
-import Header from "@repo/ui/header";
 
 import React, { Suspense } from "react";
-// import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -13,14 +11,12 @@ const TanStackRouterDevtools =
           default: res.TanStackRouterDevtools,
           // For Embedded Mode
           // default: res.TanStackRouterDevtoolsPanel
-        })),
+        }))
       );
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      {/* <Button>Press me</Button> */}
-      <Header title="Hello world!" />
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <div className="p-2 flex gap-2">
         <Link to="/" className="[&.active]:font-bold">

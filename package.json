@@ -5,7 +5,8 @@
     "dev": "turbo dev",
     "preview": "turbo preview",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "storybook": "turbo storybook"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

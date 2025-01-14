@@ -1,8 +1,10 @@
 {
-  "extends": "@repo/typescript-config/base.json",
-  "include": ["."],
-  "exclude": ["node_modules"],
+  "extends": "@repo/typescript-config/vite.json",
+  "include": ["lib"],
   "compilerOptions": {
-    "jsx": "react"
+    "jsx": "react",
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist"
   }
 }
