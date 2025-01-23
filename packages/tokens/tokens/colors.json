@@ -1,0 +1,30 @@
+{
+  "colors": {
+    "$type": "color",
+    "base": {
+      "$value": "#1FC5BF"
+    },
+    "light": {
+      "$value": "#ffffff"
+    },
+    "dark": {
+      "$value": "#000000"
+    },
+    "primary": {
+      "base": { "$value": "{colors.brand.primary.base}" },
+      "dark": { "$value": "{colors.brand.primary.dark}" },
+      "light": { "$value": "{colors.brand.primary.light}" }
+    },
+    "secondary": {
+      "base": {
+        "$value": "#6A5096"
+      },
+      "dark": {
+        "$value": "#3F1C77"
+      },
+      "light": {
+        "$value": "#C4B2E1"
+      }
+    }
+  }
+}

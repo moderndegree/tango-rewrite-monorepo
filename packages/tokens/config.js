@@ -1,7 +1,12 @@
 import StyleDictionary from "style-dictionary";
+import { outputReferencesFilter } from "style-dictionary/utils";
 import { isColor } from "./config/filter.js";
-import { cssVarsPlugin, preset, themeColors } from "./config/format.js";
+import { cssVarsPlugin, preset, theme } from "./config/format.js";
 import { rgbChannels } from "./config/transform.js";
+import { transforms } from "style-dictionary/enums";
+import { register } from "@tokens-studio/sd-transforms";
+
+register(StyleDictionary);
 
 StyleDictionary.registerTransform({
   name: "color/rgb-channels",
@@ -21,8 +26,8 @@ StyleDictionary.registerFormat({
 });
 
 StyleDictionary.registerFormat({
-  name: "tailwind/theme-colors",
-  format: themeColors,
+  name: "tailwind/theme",
+  format: theme,
 });
 
 StyleDictionary.registerFormat({
@@ -32,14 +37,21 @@ StyleDictionary.registerFormat({
 
 export default {
   source: ["./tokens/**/*.json"],
+  log: {
+    verbosity: "verbose",
+  },
   platforms: {
     css: {
       transformGroup: "css",
+      transforms: ["color/rgb", "color/rgb-channels"],
       buildPath: "dist/css/",
       files: [
         {
           destination: "_variables.css",
           format: "css/variables",
+          options: {
+            outputReferences: outputReferencesFilter,
+          },
         },
       ],
     },
@@ -201,8 +213,8 @@ export default {
           format: "tailwind/css-vars-plugin",
         },
         {
-          destination: "themeColors.js",
-          format: "tailwind/theme-colors",
+          destination: "theme.json",
+          format: "tailwind/theme",
         },
         {
           destination: "preset.js",

@@ -1,0 +1,12 @@
+{
+  "colors": {
+    "brand": {
+      "$type": "color",
+      "primary": {
+        "base": { "$value": "#1FC5BF" },
+        "dark": { "$value": "#000000" },
+        "light": { "$value": "#ffffff" }
+      }
+    }
+  }
+}

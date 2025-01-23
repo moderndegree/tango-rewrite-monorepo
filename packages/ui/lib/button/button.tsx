@@ -3,7 +3,7 @@ import { ButtonProps, Button as RAC_Button } from "react-aria-components";
 
 export const Button = (props: ButtonProps) => (
   <RAC_Button
-    className="px-4 py-2 bg-bhn-theme-dark text-bhn-text-neutral"
+    className="rounded-lg px-4 py-2 bg-primary-base text-dark bg-opacity-10 hover:opacity-100 hover:text-light"
     {...props}
   />
 );
