@@ -1,19 +1,19 @@
 {
-  "colors": {
+  "color": {
     "$type": "color",
     "base": {
       "$value": "#1FC5BF"
     },
     "light": {
-      "$value": "#ffffff"
+      "$value": "#ffffff80"
     },
     "dark": {
       "$value": "#000000"
     },
     "primary": {
-      "base": { "$value": "{colors.brand.primary.base}" },
-      "dark": { "$value": "{colors.brand.primary.dark}" },
-      "light": { "$value": "{colors.brand.primary.light}" }
+      "base": { "$value": "{color.brand.primary.base}" },
+      "dark": { "$value": "{color.brand.primary.dark}" },
+      "light": { "$value": "{color.brand.primary.light}" }
     },
     "secondary": {
       "base": {

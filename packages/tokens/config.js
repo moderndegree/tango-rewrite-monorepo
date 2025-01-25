@@ -5,8 +5,21 @@ import { cssVarsPlugin, preset, theme } from "./config/format.js";
 import { rgbChannels } from "./config/transform.js";
 import { transforms } from "style-dictionary/enums";
 import { register } from "@tokens-studio/sd-transforms";
+import chroma from "chroma-js";
 
 register(StyleDictionary);
+
+StyleDictionary.registerTransform({
+  name: "color/oklch",
+  type: "value",
+  filter: isColor,
+  transform: (token) => {
+    const [l, c, h, alpha] = chroma(token.$value || token.value)
+      .oklch()
+      .map((value) => (isNaN(value) ? "none" : Math.round(value * 100) / 100));
+    return `oklch(${l} ${c} ${h}${alpha < 1 ? ` / ${alpha}` : ""})`;
+  },
+});
 
 StyleDictionary.registerTransform({
   name: "color/rgb-channels",
@@ -204,21 +217,18 @@ export default {
         },
       ],
     },
-    tailwindPreset: {
+    tailwind: {
+      transformGroup: "css",
+      transforms: ["color/oklch"],
       buildPath: "dist/tailwind/",
-      transformGroup: "tailwind",
       files: [
         {
-          destination: "cssVarsPlugin.js",
-          format: "tailwind/css-vars-plugin",
-        },
-        {
-          destination: "theme.json",
-          format: "tailwind/theme",
-        },
-        {
-          destination: "preset.js",
-          format: "tailwind/preset",
+          destination: "theme.css",
+          format: "css/variables",
+          options: {
+            selector: "@theme inline",
+            outputReferences: outputReferencesFilter,
+          },
         },
       ],
     },
