@@ -1,94 +1,139 @@
-# Tailwind preset
+## Multi Brand & Multi Platform
 
-Builds [Tailwind preset](https://tailwindcss.com/docs/presets#creating-a-preset) from tokens.
+While it's pretty standard to use a common set of tokens to generate the same design tokens for different platforms (only in different format), this example shows how to setup a **multi-brand, multi-platform suite** of design tokens, with values that may depend on the brand (eg. a brand color) or the platform (eg. a font family).
 
-## Building the preset
+In this specific case it's necessary to use a **custom build script** to process the tokens for each one of the possible brand/platform combinations. In the script the configuration used by Style Dictionary becomes parametric, with "brand" and "platform" used as arguments of a function that returns the "config" object used to extend Style Dictionary.
 
-Run `npm run build-tokens` to generate these files in `build/tailwind`:
+The tokens are organized in **specific folders**, depending if they are "platform" dependent, "brand" dependent or "global" (independent of platform or brand). The organization of the files used in this example is not strictly required, but has the advantage that it's easier to see what the tokens depend on, and it's easier to use global paths to include the correct files for a specific combination of "brand" and "platform" (see the "source" declaration block in the `getStyleDictionaryConfig` function of the build script).
 
-### cssVarPlugin.js
+#### Running the example
 
-A [Tailwind plugin](https://tailwindcss.com/docs/plugins) for registering new [base styles](https://tailwindcss.com/docs/plugins#adding-base-styles).
+First of all, set up the required dependencies running the command `npm install` in your local CLI environment (if you prefer to use _yarn_, update the commands accordingly).
 
-The [rgbChannels](./config/transform.js) transform removes the color space function for compatability with [Tailwind's opacity modifier syntax](https://tailwindcss.com/docs/text-color#changing-the-opacity).
+At this point, if you want to build the tokens you can run `npm run build`. This command will generate the files in the `build` folder. Unlike other examples, the files are organised not only by "platform", but also organised in "brand" sub-folders.
+
+#### How does it work
+
+The "build" command will run the custom script `build.js`. This script loops on all the possible combinations of "platform" (web, iOS, Android) and "brand" ("brand-1", "brand-2" and "brand-3" in the example):
 
 ```js
-import plugin from "tailwindcss/plugin.js";
-
-export default plugin(function ({ addBase }) {
-  addBase({
-    ":root": {
-      "--sd-text-small": "0.75",
-      "--sd-text-base": "46 46 70",
-      "--sd-text-secondary": "100 100 115",
-      "--sd-text-tertiary": "129 129 142",
-      "--sd-text-neutral": "0 0 0 / 0.55",
-      "--sd-theme": "31 197 191",
-      "--sd-theme-light": "153 235 226",
-      "--sd-theme-dark": "0 179 172",
-      "--sd-theme-secondary": "106 80 150",
-      "--sd-theme-secondary-dark": "63 28 119",
-      "--sd-theme-secondary-light": "196 178 225",
-    },
+['brand-1', 'brand-2', 'brand-3'].map(function (brand) {
+  ['web', 'ios', 'android'].map(function (platform) {
+    const sd = new StyleDictionary(getStyleDictionaryConfig(brand, platform));
+    sd.buildPlatform(platform);
   });
 });
 ```
 
-### themeColors.js
-
-Tailwind theme color values that reference the plugin [css vars](https://tailwindcss.com/docs/customizing-colors#using-css-variables).
+For each combination it receives a parametric configuration object from the `getStyleDictionaryConfig` function, where the input token files to read and the output paths where to write the generated files depend on the "platform" and "brand" values:
 
 ```js
-export default {
-  "sd-text-base": "rgb(var(--sd-text-base))",
-  "sd-text-secondary": "rgb(var(--sd-text-secondary))",
-  "sd-text-tertiary": "rgb(var(--sd-text-tertiary))",
-  "sd-text-neutral": "rgb(var(--sd-text-neutral))",
-  "sd-theme": "rgb(var(--sd-theme))",
-  "sd-theme-light": "rgb(var(--sd-theme-light))",
-  "sd-theme-dark": "rgb(var(--sd-theme-dark))",
-  "sd-theme-secondary": "rgb(var(--sd-theme-secondary))",
-  "sd-theme-secondary-dark": "rgb(var(--sd-theme-secondary-dark))",
-  "sd-theme-secondary-light": "rgb(var(--sd-theme-secondary-light))",
-};
-```
-
-### preset.js
-
-[Tailwind preset](https://tailwindcss.com/docs/presets) file that imports the colors and plugin.
-
-```js
-import themeColors from "./themeColors.js";
-import cssVarsPlugin from "./cssVarsPlugin.js";
-
-export default {
-  theme: {
-    extend: {
-      colors: {
-        ...themeColors, // <-- theme colors defined here
+function getStyleDictionaryConfig(brand, platform) {
+  return {
+    "source": [
+      `tokens/brands/${brand}/*.json`,
+      "tokens/globals/**/*.json",
+      `tokens/platforms/${platform}/*.json`
+    ],
+    "platforms": {
+      "web": {
+        "transformGroup": "web",
+        "buildPath": `build/web/${brand}/`,
+        "files": [{
+          "destination": "tokens.scss",
+          "format": "scss/variables"
+        }]
       },
+      ...
+    }
+  };
+}
+```
+
+The tokens are stored in three different folders:
+
+- **brands**: this folder contain tokens that depend on the "brand", eg. the "primary" and "secondary" colors (generally these are called "brand colors", think of the blue of Facebook, the orange of Amazon, or the red of Gmail).
+- **platforms**: this folder contain tokens that depend on the "platform", eg. the font family used in the application or website (eg. a font stack like "Tahoma, Arial, 'Helvetica Neue', sans" on web, "San Francisco" in iOS, "Roboto" in Android).
+- **global**: this folder contain tokens that are common, that don't depend on the specific "platform" or "brand", eg. the base grayscale colors, the font sizes, etc.
+
+Leveraging the ability of Style Dictionary to reference other tokens values as "aliases", we can have generic tokens like `font.family.base` or `color.primary` whose values actually depend on the "platform" and "brand" and whose values are computed dynamically at build time depending on the specific "platform/brand" files, included dynamically by the `getStyleDictionaryConfig` function.
+
+#### What to look at
+
+Open the `build.js` script and look how the `StyleDictionary.buildPlatform` function is called multiple times, looping on the combination of platform and brand, and how the configuration object is returned by the `getStyleDictionaryConfig` function.
+
+Now look at the tokens folders, and see how they are organized. Open `tokens/brands/brand-1/color.json`. You will see this declaration:
+
+```json
+{
+  "color": {
+    "brand": {
+      "primary": { "value": "#3B5998", "type": "color" },
+      "secondary": { "value": "#4267B2", "type": "color" }
+    }
+  }
+}
+```
+
+The actual values depend on the "brand" (compare this file with `brand-2/color.json` and `brand-3/color.json`).
+These values are used as "aliases" in the `tokens/global/color/base.json` file:
+
+```json
+{
+  "color": {
+    "base": {
+      ...
     },
-  },
-  plugins: [cssVarsPlugin], // <-- plugin imported here
-};
+    "primary"     : { "value": "{color.brand.primary.value}", "type": "color" },
+    "secondary"   : { "value": "{color.brand.secondary.value}", "type": "color" },
+    ...
+  }
+}
 ```
 
-## Building the CSS
+Depending on the file included at build time, the actual value of `color.primary` will depend on the "brand". To see how this works out, open the file `build/web/brand-1/tokens.scss` and compare it with the similar files for "brand-2" and "brand-3": you will see how the values for `color.primary`, `color.action.primary` are different for different brands, and how they are actually the values declared in the "brands" source folders.
 
-The [Tailwind preset](https://tailwindcss.com/docs/presets#creating-a-preset) is imported from the build directory in `tailwind.config.js`.
+In the same way, now open `tokens/platforms/android/font.json` and you will see:
 
-```js
-import tailwindPreset from "./build/tailwind/preset.js";
-
-/** @type {import('tailwindcss').Config} */
-export default {
-  theme: {
-    extend: {},
-  },
-  presets: [tailwindPreset],
-  content: ["./demo/**/*.{html,js}"],
-  plugins: [],
-};
+```json
+{
+  "font": {
+    "platform": {
+      "system": { "value": "Roboto", "type": "fontFamily" }
+    }
+  }
+}
 ```
 
-Run `npm run build-css` to watch the `demo/index.html` file for changes -- any Tailwind classes used will be compiled into `demo/output.css`.
+the value `font.platform.system` is consumed by the `tokens/globals/font/index.json` file:
+
+```json
+{
+  "font": {
+    "family": {
+      "headers": { "value": "Montserrat", "type": "fontFamily" },
+      "base": { "value": "{font.platform.system.value}", "type": "fontFamily" }
+    }
+  }
+}
+```
+
+In this way the design tokens for the different platforms will be:
+
+```scss
+// WEB
+$font-family-headers: Montserrat;
+$font-family-base: Tahoma, Arial, 'Helvetica Neue', sans;
+```
+
+```swift
+// IOS
+#define FontFamilyHeaders @"Montserrat"
+#define FontFamilyBase @"San Francisco"
+
+```
+
+```
+// ANDROID
+// TODO - here you would see that the font-family-base is "Roboto"
+```

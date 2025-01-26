@@ -1,3 +1,4 @@
 @import "tailwindcss";
-@import "@repo/tokens/tailwind/theme.css";
+@import "@repo/tokens/web/tailwind-theme.css";
+@import "@repo/tokens/web/theme-bhn.css";
 @source "@repo/ui";
