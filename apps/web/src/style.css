@@ -1,7 +1,3 @@
 @import "tailwindcss";
-@import "@repo/tokens/web/tailwind-theme.css";
-@import "@repo/tokens/web/theme-bhn.css";
-@import "@repo/tokens/web/theme-gcc.css";
-@import "@repo/tokens/web/theme-tango.css";
-@import "@repo/tokens/web/theme-white-label.css";
-@source "../node_modules/@repo/ui";
+@import "@repo/tokens/web/bhn-tailwind-theme.css";
+@source "@repo/ui";

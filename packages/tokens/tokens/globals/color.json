@@ -1,0 +1,10 @@
+{
+  "color": {
+    "$type": "color",
+    "primary": { "$value": "{color.brand.primary}" },
+    "secondary": { "$value": "{color.brand.secondary}" },
+    "accent": { "$value": "{color.brand.accent}" },
+    "background": { "$value": "{color.brand.background}" },
+    "text": { "$value": "{color.brand.text}" }
+  }
+}

@@ -38,13 +38,20 @@ StyleDictionary.registerFormat({
   name: "tailwind/theme",
   format: (dictionary) =>
     `@theme inline {\n${dictionary.allTokens
-      .filter((token) => !token.filePath.includes("brands"))
+      // .filter(
+      //   (token) =>
+      //     !token.filePath.includes("brands") &&
+      //     !token.filePath.includes("platforms")
+      // )
       .map((token) => `  --${token.name}: ${token.$value || token.value};`)
       .join("\n")}\n}`,
 });
 
 function getStyleDictionaryConfig(brand, platform) {
   return {
+    log: {
+      verbosity: "verbose",
+    },
     source: [
       `tokens/brands/${brand}/*.json`,
       "tokens/globals/**/*.json",
@@ -57,11 +64,19 @@ function getStyleDictionaryConfig(brand, platform) {
         buildPath: "dist/web/",
         files: [
           {
-            destination: `theme-${brand}.css`,
+            destination: `${brand}-theme-vars.css`,
             format: cssVariables,
             options: {
               outputReferences: outputReferencesFilter,
-              selector: `.theme-${brand}`,
+              // selector: `.theme-${brand}`,
+            },
+          },
+          {
+            destination: `${brand}-tailwind-theme.css`,
+            format: cssVariables,
+            options: {
+              outputReferences: outputReferencesFilter,
+              selector: "@theme inline",
             },
           },
         ],
@@ -102,7 +117,7 @@ console.log("Build started...");
 
 // PROCESS THE DESIGN TOKENS FOR THE DIFFEREN BRANDS AND PLATFORMS
 
-["bhn", "gcc", "tango", "white-label"].map(function (brand) {
+["bhn", "gcc", "tango"].map(function (brand) {
   ["web", "ios", "android"].map(function (platform) {
     console.log("\n==============================================");
     console.log(`\nProcessing: [${platform}] [${brand}]`);
@@ -112,26 +127,34 @@ console.log("Build started...");
   });
 });
 
-const twConfig = getStyleDictionaryConfig("white-label", "web");
-const twSd = new StyleDictionary({
-  ...twConfig,
-  platforms: {
-    ...twConfig.platforms,
-    web: {
-      ...twConfig.platforms.web,
-      transforms: ["tailwind/var"],
-      files: [
-        {
-          ...twConfig.platforms.web.files[0],
-          destination: "tailwind-theme.css",
-          format: "tailwind/theme",
-          options: { ...twConfig.options, selector: "@theme inline" },
-        },
-      ],
-    },
-  },
-});
-twSd.buildAllPlatforms();
+// const twSd = new StyleDictionary({
+//   log: {
+//     verbosity: "verbose",
+//   },
+//   source: [
+//     "tokens/brands/bhn/**/*.json",
+//     "tokens/globals/**/*.json",
+//     "tokens/platforms/web/**/*.json",
+//   ],
+//   platforms: {
+//     web: {
+//       transformGroup: web,
+//       // transforms: ["tailwind/var"],
+//       buildPath: "dist/web/",
+//       files: [
+//         {
+//           destination: "tailwind-theme.css",
+//           format: "tailwind/theme",
+//           options: {
+//             outputReferences: outputReferencesFilter,
+//             selector: "@theme inline",
+//           },
+//         },
+//       ],
+//     },
+//   },
+// });
+// twSd.buildAllPlatforms();
 
 console.log("\n==============================================");
 console.log("\nBuild completed!");

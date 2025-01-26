@@ -16,7 +16,7 @@ const TanStackRouterDevtools =
 
 export const Route = createRootRoute({
   component: () => (
-    <div className="theme-bhn">
+    <div>
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <div className="p-2 flex gap-2">
         <Link to="/" className="[&.active]:font-bold">

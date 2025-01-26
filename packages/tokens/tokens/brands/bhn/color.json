@@ -1,8 +1,12 @@
 {
   "color": {
     "brand": {
-      "primary": { "value": "#3B5998", "type": "color" },
-      "secondary": { "value": "#4267B2", "type": "color" }
+      "$type": "color",
+      "primary": { "$value": "#0056A4" },
+      "secondary": { "$value": "#FFB81C" },
+      "accent": { "$value": "#00A3E0" },
+      "background": { "$value": "#F3F4F6" },
+      "text": { "$value": "#111827" }
     }
   }
 }
