@@ -1,33 +1,42 @@
-# `Turborepo` Vite starter
+# Monorepo Project
 
-This is an official starter Turborepo.
+This monorepo contains multiple packages and applications, managed using `pnpm` and `turbo`. The structure is organized to support a multi-brand, multi-platform suite of design tokens, UI components, and web applications.
 
-## Using this example
+### Packages
 
-Run the following command:
+- **eslint-config**: Shared ESLint configuration.
+- **tokens**: Design tokens for multiple brands and platforms.
+- **typescript-config**: Shared TypeScript configuration.
+- **ui**: Shared UI components.
 
-```sh
-npx create-turbo@latest -e with-vite
-```
+### Applications
 
-## What's inside?
+- **web**: The main web application.
 
-This Turborepo includes the following packages and apps:
+## Getting Started
 
-### Apps and Packages
+### Prerequisites
 
-- `docs`: a vanilla [vite](https://vitejs.dev) ts app
-- `web`: another vanilla [vite](https://vitejs.dev) ts app
-- `@repo/ui`: a stub component & utility library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: shared `eslint` configurations
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- Node.js >= 18
+- pnpm >= 9.15.4
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Installation
 
-### Utilities
+1. Clone the repository:
+   ```sh
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+2. Install dependencies:
+   ```sh
+   pnpm install
+   ```
 
-This Turborepo has some additional tools already setup for you:
+### Scripts
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- Build: `pnpm run build`
+- Development: `pnpm run dev`
+- Preview: `pnpm run preview`
+- Lint: `pnpm run lint`
+- Format: `pnpm run format`
+- Storybook: `pnpm run storybook`
