@@ -17,8 +17,8 @@ At this point, if you want to build the tokens you can run `npm run build`. This
 The "build" command will run the custom script `build.js`. This script loops on all the possible combinations of "platform" (web, iOS, Android) and "brand" ("brand-1", "brand-2" and "brand-3" in the example):
 
 ```js
-['brand-1', 'brand-2', 'brand-3'].map(function (brand) {
-  ['web', 'ios', 'android'].map(function (platform) {
+["brand-1", "brand-2", "brand-3"].map(function (brand) {
+  ["web", "ios", "android"].map(function (platform) {
     const sd = new StyleDictionary(getStyleDictionaryConfig(brand, platform));
     sd.buildPlatform(platform);
   });
@@ -123,7 +123,7 @@ In this way the design tokens for the different platforms will be:
 ```scss
 // WEB
 $font-family-headers: Montserrat;
-$font-family-base: Tahoma, Arial, 'Helvetica Neue', sans;
+$font-family-base: Tahoma, Arial, "Helvetica Neue", sans;
 ```
 
 ```swift
