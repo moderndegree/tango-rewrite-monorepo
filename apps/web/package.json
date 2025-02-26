@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
-    "@tanstack/react-query": "^5.66.0",
-    "@tanstack/react-router": "^1.99.0",
+    "@tanstack/react-query": "^5.66.9",
+    "@tanstack/react-router": "^1.111.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -20,16 +20,16 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/tokens": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@tailwindcss/vite": "^4.0.3",
-    "@tanstack/router-devtools": "^1.99.0",
-    "@tanstack/router-plugin": "^1.99.3",
-    "@types/node": "^22.13.0",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
+    "@tailwindcss/vite": "^4.0.9",
+    "@tanstack/router-devtools": "^1.111.11",
+    "@tanstack/router-plugin": "^1.111.11",
+    "@types/node": "^22.13.5",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.19.0",
-    "tailwindcss": "^4.0.3",
+    "eslint": "^9.21.0",
+    "tailwindcss": "^4.0.9",
     "typescript": "5.7.3",
-    "vite": "^6.0.11"
+    "vite": "^6.2.0"
   }
 }
