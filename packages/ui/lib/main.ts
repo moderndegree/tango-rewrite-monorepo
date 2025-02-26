@@ -1,2 +1,2 @@
 import "./style.css";
-export * from "./button/button";
+export * from "./buttons";
