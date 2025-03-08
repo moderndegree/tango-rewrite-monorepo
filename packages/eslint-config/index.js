@@ -12,6 +12,10 @@ export default [
   ...tseslint.configs.recommended,
   {
     ...pluginReact.configs.flat.recommended,
+    rules: {
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
+    },
     settings: {
       react: {
         version: "19",

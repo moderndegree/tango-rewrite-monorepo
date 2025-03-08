@@ -1,6 +1,7 @@
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
-
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { Navigation } from "../components/navigation";
 import React, { Suspense } from "react";
+import { QueryClient } from "@tanstack/react-query";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -11,23 +12,26 @@ const TanStackRouterDevtools =
           default: res.TanStackRouterDevtools,
           // For Embedded Mode
           // default: res.TanStackRouterDevtoolsPanel
-        })),
+        }))
       );
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
   component: () => (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <div className="p-2 flex gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{" "}
-        <Link to="/about" className="[&.active]:font-bold">
-          About
-        </Link>
+    <div className="min-h-screen flex flex-col">
+      <h1 className="text-3xl font-bold underline p-4">Hello world!</h1>
+      <div className="flex flex-1">
+        {/* Left navigation */}
+        <div className="w-64 border-r p-4">
+          <Navigation />
+        </div>
+
+        {/* Main content */}
+        <div className="flex-1 p-4">
+          <Outlet />
+        </div>
       </div>
-      <hr />
-      <Outlet />
       <Suspense>
         <TanStackRouterDevtools />
       </Suspense>
