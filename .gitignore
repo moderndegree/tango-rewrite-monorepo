@@ -12,3 +12,4 @@ public/dist
 *.gen.ts
 
 *storybook.log
+.pnpm-store
