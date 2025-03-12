@@ -8,5 +8,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "npm.autoDetect": "off",
+  "npm.packageManager": "pnpm"
 }
