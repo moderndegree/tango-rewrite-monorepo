@@ -1,0 +1,35 @@
+services:
+  devcontainer:
+    image: "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm"
+    user: node
+    volumes:
+      - ../..:/workspaces:cached
+      # Mount the pnpm store
+      - pnpm-store:/home/node/.pnpm-store
+      # Mount the workspace
+      - ./workspace:/workspace
+      # Mount the SSH directory from your host
+      - ${HOME}/.ssh:/home/node/.ssh:ro
+    environment:
+      # Set the pnpm store path environment variable
+      - PNPM_STORE_PATH=/home/node/.pnpm-store
+    network_mode: service:db
+    command: sleep infinity
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      # PostgreSQL port
+      - "5432:5432"
+      # Web app port (assuming it runs on 3000 inside the container)
+      - "3000:3000"
+volumes:
+  postgres-data:
+  pnpm-store:
+    driver: local

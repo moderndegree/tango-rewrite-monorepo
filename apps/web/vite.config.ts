@@ -10,4 +10,16 @@ export default defineConfig({
     TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
     viteReact(),
   ],
+  server: {
+    port: 3000,
+    host: true, // Listen on all addresses
+    proxy: {
+      // Direct proxy to JSONPlaceholder without nginx in between
+      "/api": {
+        target: "https://jsonplaceholder.typicode.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });
